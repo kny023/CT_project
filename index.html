@@ -1,50 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Photon connect</title>
+  </head>
+  <body>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
-<script>
-    let URL = "https://api.particle.io/v1/devices/3b005a001051373331333230/pot_value?access_token=e9ce75496559a61f43c6a9bcd9af4dafaea37bc2";
-    let URL2 = "https://api.particle.io/v1/devices/31002a001947393035313138/pot_value?access_token=289ef5bd3b8eb44dae0232211b5843039c08d82d";
-    let data = "";
-    let data2 = "";
-    let currentTime, prevTime;
-    let value = 10;
 
-    function setup(){
+    <script>
+      //URL need to change "events" to "pot_value"
+      //pot_value is the name set for the variable that holds the potentiometer data
+      //check at https://console.particle.io/devices/31002a001947393035313138
+      //also check at https://build.particle.io/build/5fa60905483a480009a156e8
+      let URL = "https://api.particle.io/v1/devices/31002a001947393035313138/pot_value?access_token=289ef5bd3b8eb44dae0232211b5843039c08d82d";
+      let otherURL = "https://api.particle.io/v1/devices/3b005a001051373331333230/pot_value?access_token=e9ce75496559a61f43c6a9bcd9af4dafaea37bc2";
+      let data = "";
+      let other_data = "";
+      let currentTime, prevTime;
+      let value = 10;
+      let other_value = 10;
+
+      function setup(){
         createCanvas(400, 400);
-    }
+      }
 
-    function draw(){
+      function draw(){
         background(255);
 
-        currentTime = millis() % 1000; 
-        if(currentTime < prevTime){
-            data = loadJSON(URL, processData);
-            data2 = loadJSON(URL2, processData);
-
+        currentTime = millis() % 1000;
+        if (currentTime < prevTime) {
+          data = loadJSON(URL, processData);
+          other_data = loadJSON(otherURL, processData);
+          //console.log(data);
+          //value = map(parseInt(data.result), 0, 4096, 0, width);
         }
-        fill(255, 0, 0); 
+        fill(255, 0, 0);
         circle(width/2, height/2, value);
 
+        fill(0, 255, 0);
+        circle(width/3, height/3, other_value);
+
         prevTime = currentTime;
-    }
+      }
 
-    function processData(data){
-        console.log(data.result);
-        value = map(parseInt(data.result),0, 4096, 0, 400);
-        value = map(parseInt(data2.result),0, 4096, 0, 400);
-        console.log(value);
-    }
-</script>
-
-</body>
+//need to have this callback function
+//because there is just too much data to load
+//after the data is processed, the data would be loaded in loadJSON
+      function processData(data){
+        //console.log(data.result);
+        value = map(parseInt(data.result), 0, 4096, 0, 400);
+        other_value = map(parseInt(other_data.result), 0, 4096, 0, 400);
+        console.log(value, other_value);
+      }
+    </script>
+  </body>
 </html>
-
-
-
-
