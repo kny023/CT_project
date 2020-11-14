@@ -30,7 +30,7 @@
         currentTime = millis() % 1000;
         if (currentTime < prevTime) {
           data = loadJSON(URL, processData);
-          other_data = loadJSON(otherURL, processData);
+          other_data = loadJSON(otherURL, processData2);
           //console.log(data);
           //value = map(parseInt(data.result), 0, 4096, 0, width);
         }
@@ -38,8 +38,7 @@
         circle(width/2, height/2, value);
 
         fill(0, 255, 0);
-        circle(width/3, height/3, other_value);
-
+        rect(0, 0, other_value, other_value);
         prevTime = currentTime;
       }
 
@@ -49,8 +48,15 @@
       function processData(data){
         //console.log(data.result);
         value = map(parseInt(data.result), 0, 4096, 0, 400);
+        //other_value = map(parseInt(other_data.result), 0, 4096, 0, 400);
+        //console.log(value, other_value);
+      }
+
+      function processData2(other_data){
+        //console.log(data.result);
+        //value = map(parseInt(data.result), 0, 4096, 0, 400);
         other_value = map(parseInt(other_data.result), 0, 4096, 0, 400);
-        console.log(value, other_value);
+        //console.log(value, other_value);
       }
     </script>
   </body>
